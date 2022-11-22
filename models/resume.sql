@@ -30,12 +30,42 @@ with
             od.order_date,
             od.order_id,
             cs.company_name as customer,
-            emp.name as employee,
+            emp.fullname as employee,
             emp.age,
             emp.lengthofservice
         from {{ source("sources", "orders") }} od
         left join {{ ref("customers") }} cs on od.customer_id = cs.customer_id
         left join {{ ref("employees") }} emp on od.employee_id = emp.employee_id
         left join {{ source("sources", "shippers") }} sh on od.ship_via = sh.shipper_id
+    ),
+    resume as (
+        select
+            odd.category_name,
+            odd.suppliers,
+            odd.product_name,
+            odd.unit_price,
+            odd.product_id,
+            odd.order_id,
+            odd.quantity,
+            odd.discount,
+            od.customer,
+            od.employee,
+            od.age,
+            od.lengthofservice
+        from orderdetails odd
+        inner join orders od on odd.order_id = od.order_id
     )
-select * from orders
+select
+    category_name,
+    suppliers,
+    product_name,
+    unit_price,
+    product_id,
+    order_id,
+    quantity,
+    discount,
+    customer,
+    employee,
+    age,
+    lengthofservice
+from resume

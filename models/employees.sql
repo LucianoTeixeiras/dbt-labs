@@ -6,8 +6,7 @@ with
             last_name,
             first_name || ' ' || last_name as fullname,
             date_part(year, current_date) - date_part(year, birth_date) as age,
-            date_part(year, current_date)
-            - date_part(year, hire_date) as lengthofservice,
+            date_part(year, current_date) - date_part(year, hire_date) as lengthofservice,
             title,
             title_of_courtesy,
             birth_date,
