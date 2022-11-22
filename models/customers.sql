@@ -33,7 +33,7 @@ with markup as(
         ,country
         ,phone
     from {{source('sources','customers')}}
-    where customer_id in (select result from removed)
+    join removed on  customer_id = result
 )
 select
      customer_id
